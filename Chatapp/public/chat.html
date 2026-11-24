@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ChatApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/chat.css" />
+</head>
+<body>
+  <div class="bg-orbs"><span></span><span></span><span></span></div>
+
+  <div id="connBanner" class="conn-banner hidden" role="status"></div>
+
+  <div class="app" id="app">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar glass">
+      <div class="side-head">
+        <div class="brand-sm">
+          <div class="brand-logo-sm"><i data-icon="chat"></i></div>
+          <span>Chat<b>App</b></span>
+        </div>
+        <div class="active-chip" title="Users online right now"><span class="pulse"></span><span id="activeCount">0</span> online</div>
+      </div>
+
+      <div class="me-card" id="meCard">
+        <div id="meAvatar"></div>
+        <div class="me-info">
+          <div class="me-name" id="meName">…</div>
+          <div class="me-user" id="meUser"></div>
+        </div>
+        <button class="icon-btn" id="openSettings" title="Settings" aria-label="Settings"><i data-icon="settings"></i></button>
+      </div>
+
+      <div class="search">
+        <i data-icon="search"></i>
+        <input id="searchInput" type="search" placeholder="Search users by username or name" autocomplete="off" maxlength="30" />
+      </div>
+
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="chats">Chats <span class="badge hidden" id="unreadBadge">0</span></button>
+        <button class="tab" data-tab="online">Online <span class="count" id="onlineCount">0</span></button>
+      </div>
+
+      <div class="list" id="list"></div>
+
+      <div class="side-foot">
+        <button class="btn btn-ghost" id="settingsBtn"><i data-icon="settings"></i> Settings</button>
+        <button class="btn btn-danger" id="logoutBtn"><i data-icon="logout"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- ================= CHAT WINDOW ================= -->
+    <main class="chat glass" id="chatPane">
+      <div class="empty" id="emptyState">
+        <div class="empty-logo"><i data-icon="chat"></i></div>
+        <h2>Welcome to ChatApp</h2>
+        <p>Search for a user on the left, or pick someone who is online, to start a conversation.</p>
+        <p class="server-note hidden" id="serverNote"></p>
+      </div>
+
+      <div class="chat-inner hidden" id="chatInner">
+        <header class="chat-head">
+          <button class="icon-btn back-btn" id="backBtn" aria-label="Back to chats"><i data-icon="back"></i></button>
+          <div id="headAvatar"></div>
+          <div class="head-info">
+            <div class="head-name" id="headName"></div>
+            <div class="head-status" id="headStatus"></div>
+          </div>
+          <button class="icon-btn danger" id="deleteConvBtn" title="Delete conversation" aria-label="Delete conversation"><i data-icon="trash"></i></button>
+        </header>
+
+        <div class="messages" id="messages" aria-live="polite"></div>
+
+        <form class="composer" id="composer" autocomplete="off">
+          <textarea id="messageInput" rows="1" maxlength="2000" placeholder="Type a message…" title="Enter to send, Shift+Enter for a new line"></textarea>
+          <button class="send-btn" id="sendBtn" type="submit" aria-label="Send message"><i data-icon="send"></i></button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- ================= SETTINGS MODAL ================= -->
+  <div class="modal-backdrop hidden" id="settingsModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-head">
+        <h3 id="settingsTitle">Your profile</h3>
+        <button class="icon-btn" data-close aria-label="Close"><i data-icon="x"></i></button>
+      </div>
+      <form id="settingsForm" class="modal-body" novalidate>
+        <div class="settings-avatar" id="settingsAvatar"></div>
+        <div class="field">
+          <label>Username</label>
+          <div class="static-val" id="setUsername"></div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <div class="static-val" id="setEmail"></div>
+        </div>
+        <div class="field" id="sf-fullName">
+          <label for="setFullName">Full name</label>
+          <div class="input-wrap plain"><input id="setFullName" type="text" maxlength="60" /></div>
+          <div class="field-error"></div>
+        </div>
+        <div class="field" id="sf-profilePicture">
+          <label for="setPicture">Profile picture link (optional)</label>
+          <div class="input-wrap plain"><input id="setPicture" type="url" maxlength="500" placeholder="https://example.com/me.jpg" /></div>
+          <div class="field-error"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveProfileBtn">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DELETE CONFIRM MODAL ================= -->
+  <div class="modal-backdrop hidden" id="confirmModal">
+    <div class="modal small" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-head"><h3 id="confirmTitle">Delete conversation?</h3></div>
+      <div class="modal-body">
+        <p class="confirm-text" id="confirmText"></p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>

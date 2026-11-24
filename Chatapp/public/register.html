@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up · ChatApp</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body>
+  <div class="bg-orbs"><span></span><span></span><span></span></div>
+
+  <main class="auth-page">
+    <section class="auth-card glass">
+      <div class="brand">
+        <div class="brand-logo"><i data-icon="chat"></i></div>
+        <div class="brand-name">Chat<span>App</span></div>
+      </div>
+
+      <h1>Create your account</h1>
+      <p class="sub">Join ChatApp and start chatting in real time.</p>
+
+      <form id="registerForm" class="auth-form" novalidate>
+        <div id="formAlert" class="form-alert" role="alert"></div>
+
+        <div class="field" id="f-fullName">
+          <label for="fullName">Full name</label>
+          <div class="input-wrap">
+            <span class="lead"><i data-icon="user"></i></span>
+            <input id="fullName" type="text" autocomplete="name" placeholder="Jane Doe" maxlength="60" required />
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <div class="row-2">
+          <div class="field" id="f-username">
+            <label for="username">Username</label>
+            <div class="input-wrap">
+              <span class="lead"><i data-icon="at"></i></span>
+              <input id="username" type="text" autocomplete="username" placeholder="jane_doe" maxlength="20" required />
+            </div>
+            <div class="field-error"></div>
+          </div>
+
+          <div class="field" id="f-email">
+            <label for="email">Email address</label>
+            <div class="input-wrap">
+              <span class="lead"><i data-icon="mail"></i></span>
+              <input id="email" type="email" autocomplete="email" placeholder="jane@example.com" required />
+            </div>
+            <div class="field-error"></div>
+          </div>
+        </div>
+
+        <div class="field" id="f-password">
+          <label for="password">Password</label>
+          <div class="input-wrap has-toggle">
+            <span class="lead"><i data-icon="lock"></i></span>
+            <input id="password" type="password" autocomplete="new-password" placeholder="At least 8 characters, letters + numbers" maxlength="72" required />
+            <button type="button" class="toggle-pass" data-target="password"></button>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <div class="field" id="f-confirmPassword">
+          <label for="confirmPassword">Confirm password</label>
+          <div class="input-wrap has-toggle">
+            <span class="lead"><i data-icon="lock"></i></span>
+            <input id="confirmPassword" type="password" autocomplete="new-password" placeholder="Type the password again" maxlength="72" required />
+            <button type="button" class="toggle-pass" data-target="confirmPassword"></button>
+          </div>
+          <div class="field-error"></div>
+        </div>
+
+        <button id="submitBtn" class="btn btn-primary" type="submit">Create account</button>
+      </form>
+
+      <p class="switch">Already have an account? <a href="/login.html">Log in</a></p>
+    </section>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/register.js"></script>
+</body>
+</html>
